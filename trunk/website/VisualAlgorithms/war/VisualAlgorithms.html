@@ -1,53 +1,68 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<!-- The HTML 4.01 Transitional DOCTYPE declaration-->
-<!-- above set at the top of the file will set     -->
-<!-- the browser's rendering engine into           -->
-<!-- "Quirks Mode". Replacing this declaration     -->
-<!-- with a "Standards Mode" doctype is supported, -->
-<!-- but may lead to some differences in layout.   -->
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.0b3 [en] (WinNT; I) [Netscape]">
+   <TITLE>Michael Maguire - Visual Matching
+</TITLE>
+<!-- ============================================================== -->
+<!-- ====== HTML Page Template -- Michael Maguire -- 25 Oct 95 ==== -->
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<!-- ====== Document Title Here =================================== -->
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+</HEAD>
+<BODY>
 
-<html>
-  <head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<H1>
+Visual Matching</H1>
 
-    <!--                                                               -->
-    <!-- Consider inlining CSS to reduce the number of requested files -->
-    <!--                                                               -->
-    <link type="text/css" rel="stylesheet" href="VisualAlgorithms.css">
+<HR>
+<BR>This is a port of some educational software I wrote several
+years ago for Prof. Luis Goddyn of the Centre for Experimental and Constructive
+Mathematics, Simon Fraser University.  I haven't yet implemented
+all the user-friendliness, animation and algorithms of the Macintosh C
+versions, but the applet demonstrates some potential for Java's
+use in visualization.
+<BR>
 
-    <!--                                           -->
-    <!-- Any title is fine                         -->
-    <!--                                           -->
-    <title>Web Application Starter Project</title>
-    
-    <!--                                           -->
-    <!-- This script loads your compiled module.   -->
-    <!-- If you add any GWT meta tags, they must   -->
-    <!-- be added before this line.                -->
-    <!--                                           -->
-    <script type="text/javascript" language="javascript" src="visualalgorithms/visualalgorithms.nocache.js"></script>
-  </head>
+<BR>For the <B>minimum weight non-bipartite perfect matching</B>, the colours don't matter --
+just enter some points, then hit
+step or go, and watch as the Java applet matches them up into pairs
+using the minimum total line length.
+<BR>
+<BR>For the <B>minimum weight bipartite perfect matching</B>, enter the same
+number of red and blue points in the area provided below,  watching as the Java applet finds the best way to marry all
+the blue points to the red points using the minimum total line length.
+<BR>
+<BR>For the <B>minimum weight spanning tree</B>, the colours don't matter --
+just enter some points and watch the Java applet connect them up into a
+network using the minimum total line length.
+<BR>
+<HR WIDTH="100%">
+<BR><APPLET codebase="." code="Visual_Matching.class" width=640 height=480></APPLET>
+<HR WIDTH="100%">
+<BR>The algorithms are based on some work in <I>Geometric Duality and
+Combinatorial Optimization</I> by M. Juenger, Universitaet zu Koeln and
+W.R. Pulleyblank, IBM T. J. Watson Research Center.
+<BR>
+<BR>Note: This applet was compiled with Sun's JDK version 1.02. 
+<BR>
+<BR>
+<HR WIDTH="100%">
+<BR>
+For the latest version of this program, check out the version being used in courses at Simon Fraser University: 
+<A HREF="http://www.math.sfu.ca/~goddyn/Courseware/Visual_Matching.html">http://www.math.sfu.ca/~goddyn/Courseware/Visual_Matching.html</A>
+<BR>
+<BR>
+<HR WIDTH="100%">
+<ADDRESS>
+<A HREF="http://www.geocities.com/michael.maguire/">Michael
+Maguire</A></ADDRESS>
 
-  <!--                                           -->
-  <!-- The body can have arbitrary html, or      -->
-  <!-- you can leave the body empty if you want  -->
-  <!-- to create a completely dynamic UI.        -->
-  <!--                                           -->
-  <body>
+<BR><!-- ============================================================== --><!-- ======== last modified date here ============================= --><FONT SIZE=-1>12
+July 98 <!-- ============================================================== --><!-- ============================================================== --></FONT> 
 
-    <!-- OPTIONAL: include this if you want history support -->
-    <iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1' style="position:absolute;width:0;height:0;border:0"></iframe>
-
-    <h1>Web Application Starter Project</h1>
-
-    <table align="center">
-      <tr>
-        <td colspan="2" style="font-weight:bold;">Please enter your name:</td>        
-      </tr>
-      <tr>
-        <td id="nameFieldContainer"></td>
-        <td id="sendButtonContainer"></td>
-      </tr>
-    </table>
-  </body>
-</html>
+</BODY>
+</HTML>
