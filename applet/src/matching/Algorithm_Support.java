@@ -3,6 +3,7 @@
 // all the functions the algorithms
 //  should ever need for talking to the rest of the program
 
+package matching;
 
 interface Algorithm_Support
 {

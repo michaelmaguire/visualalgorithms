@@ -3,6 +3,8 @@
 
 // every algorithm should be able to do the following
 
+package matching;
+
 public interface Algorithms_Provide
 {
 

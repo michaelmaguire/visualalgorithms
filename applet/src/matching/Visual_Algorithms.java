@@ -1,5 +1,8 @@
 // Visual_Algorithms.java - Michael Maguire - 14 Apr 96
 
+package matching;
+
+
 import java.applet.*;    
 import java.awt.*; 
 
