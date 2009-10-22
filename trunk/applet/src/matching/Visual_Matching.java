@@ -7,7 +7,7 @@ import java.applet.*;
 import java.awt.*; 
 
 
-public class Visual_Algorithms extends Applet
+public class Visual_Matching extends Applet
 {
 
 	Graph_Panel the_graph;
