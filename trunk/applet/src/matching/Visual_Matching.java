@@ -8,8 +8,6 @@ import java.awt.*;
 
 
 
-
-
 public class Visual_Matching extends Applet
 
 {
@@ -17,7 +15,10 @@ public class Visual_Matching extends Applet
 
 
 	private Graph_Panel the_graph;
+   
+        private Scrollbar delay_control;
 
+        private Scrollbar increment_control;
 
 	public void init()
 
@@ -28,6 +29,9 @@ public class Visual_Matching extends Applet
 
 
 		the_graph = new Graph_Panel();
+
+/**goddyn*/     //the_graph.resize( 1900,1900 );
+                //System.out.println("the_graph size: " + the_graph.size().width + " " + the_graph.size().height );
 
 		add("Center", the_graph);
 
@@ -48,6 +52,12 @@ public class Visual_Matching extends Applet
 
 		buttons.add(new Button("Clear all"));
 
+/**goddyn*/
+                if ( getParameter("PRINTPOINTSBUTTON") != null )
+		{
+			buttons.add(new Button("Print Points"));
+		}
+       
 		add("South", buttons );
 
 
@@ -83,6 +93,140 @@ public class Visual_Matching extends Applet
 		add("North", algorithms);
 
 
+/**goddyn*/
+                Panel controls = new Panel();
+                GridBagLayout gridBag = new GridBagLayout();
+                GridBagConstraints   c = new GridBagConstraints();
+
+                controls.setLayout(gridBag);
+
+                Label title_label = new Label("Animation", Label.LEFT);
+                title_label.setFont(new Font("Helvetica", Font.BOLD, 12));
+                c.gridwidth = 2;
+                c.weighty = 0.1f;
+                gridBag.setConstraints( title_label , c);
+                controls.add(title_label);
+
+
+                delay_control = new Scrollbar(Scrollbar.VERTICAL, 11, 3, 0, 50);
+                c.gridwidth = 1;
+                c.weighty = 0.9f;
+                c.fill = GridBagConstraints.VERTICAL; 
+                c.gridx = 0;
+                c.gridy = 1;
+                gridBag.setConstraints( delay_control , c);
+                controls.add(delay_control);
+
+
+                increment_control = new Scrollbar(Scrollbar.VERTICAL, 2, 5, 0, 60);
+                c.gridx = 1;
+                gridBag.setConstraints( increment_control , c);
+                controls.add(increment_control);
+
+
+                Label delay_label = new Label("Delay", Label.CENTER);
+                c.weighty = 0.0f;
+                c.fill = GridBagConstraints.NONE;
+                c.gridx = 0;
+                c.gridy = 2;
+
+
+                Label increment_label = new Label("Increment", Label.CENTER);
+                gridBag.setConstraints( delay_label , c);
+                controls.add(delay_label);
+
+                c.gridx = 1;
+
+                gridBag.setConstraints( increment_label , c);
+                controls.add(increment_label);
+
+ 
+                //the_graph.animation_delay = delay_control.getValue();
+                the_graph.animation_delay = (int) (5 * Math.exp( (double) delay_control.getValue() / 10.0));
+                //the_graph.growth_increment = (float) increment_control.getValue();
+                the_graph.growth_increment =  (float) Math.exp( (double)  increment_control.getValue() /10.0 );
+
+            
+                add("East", controls);
+
+
+/**endgoddyn*/
+
+                //Input Inital points
+
+                String pointListString = getParameter("INITIALPOINTS");
+                //System.out.println( "pointListString: " + pointListString);
+
+                if ( pointListString != null)
+                {
+                    int[] pointsListArray = new int[pointListString.length()];
+                    int firstDigitPos = 0;
+                    int lastDigitPos = 0;
+                    int intCounter = 0;
+
+                    for(  boolean MoreNumbersToParse = true; MoreNumbersToParse ;  )
+                    {
+                      try  //Find first digit in string
+                      {  
+                         for(  firstDigitPos = lastDigitPos;
+                              "0123456789".indexOf( pointListString.charAt(firstDigitPos) ) == -1;
+                              firstDigitPos++)
+                         {
+                            //Do nothing -- just looking for first digit.
+                         }
+                      }
+                      catch( StringIndexOutOfBoundsException e)
+                      { 
+                         MoreNumbersToParse = false;
+                      }
+
+
+                     try  //Find last digit in string
+                      {
+
+                         for( lastDigitPos = firstDigitPos+1;
+                              lastDigitPos< pointListString.length() &&
+                                   "0123456789".indexOf( pointListString.charAt(lastDigitPos) ) != -1;
+                              lastDigitPos++)
+                         {
+                            //Do nothing -- just locating last consecutive digit.
+                         }
+
+                      }  
+                      catch( StringIndexOutOfBoundsException e)
+                      {  
+                         //MoreNumbersToParse = false;
+                      }  
+
+
+                     try  //Convert substring into integer
+                      {
+                         //System.out.println("Digit Positions: " + firstDigitPos + " " + lastDigitPos);
+                         //System.out.println("Number String: " + ( pointListString.substring(firstDigitPos,lastDigitPos) ) );
+
+                         pointsListArray[ intCounter++ ] 
+                               = (new Integer( pointListString.substring(firstDigitPos,lastDigitPos) ) ).intValue();
+
+                         //System.out.println("count: " + intCounter + "    Number : " + pointsListArray[ intCounter-1] );
+                      }
+                      catch( StringIndexOutOfBoundsException e)
+                      {
+                      }
+
+
+                    }
+                      
+                    for ( int pointCounter=2; pointCounter < 3* (intCounter/3); pointCounter += 3)
+                    {
+                       //System.out.println("Adding a node");
+                       the_graph.add_node( pointsListArray[pointCounter-2],
+                                           pointsListArray[pointCounter-1],
+                                           pointsListArray[pointCounter]!=0 //if == 0 then don't change colour from default
+                                         );
+                    }
+
+                }
+/** endgoddyn */
 
 		repaint();
 
@@ -217,8 +361,46 @@ public class Visual_Matching extends Applet
 
 		}
 
+		if ("Print Points".equals(arg))
+
+		{
+
+			the_graph.print_points();
+
+			return true;
+
+		}
+
+
 		return false;
 
 	}
+
+
+/**goddyn*/
+       public boolean handleEvent ( Event evt )
+       {
+                switch (evt.id) 
+                {
+                  case Event.SCROLL_LINE_UP:
+                  case Event.SCROLL_LINE_DOWN:
+                  case Event.SCROLL_PAGE_UP:
+                  case Event.SCROLL_PAGE_DOWN:
+                  case Event.SCROLL_ABSOLUTE:
+                    if ( evt.target == delay_control )
+                    {
+                       // the_graph.animation_delay = ((Integer)evt.arg).intValue();
+                       //the_graph.animation_delay = delay_control.getValue();
+                       the_graph.animation_delay = (int) (5 * Math.exp( (double) delay_control.getValue() / 10.0));
+                    }
+
+                    if ( evt.target == increment_control )
+                    {
+                        the_graph.growth_increment =  (float) Math.exp( (double)  ((Integer)evt.arg).intValue() /10.0 );
+                    }
+                }
+                return super.handleEvent(evt);
+       }
+/**endgoddyn*/
 
 }

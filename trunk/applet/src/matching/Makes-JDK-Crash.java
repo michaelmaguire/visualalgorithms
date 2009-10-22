@@ -2,10 +2,10 @@
 
 package matching;
 
-import matching.non_bipartite_perfect_matching,*;
-import matching.bipartite_perfect_matching,*;
-import matching.bipartite_vertex_cover,*;
-import matching.non_bipartite_spanning_tree,*;
+import matching.non_bipartite_perfect_matching.*;
+import matching.bipartite_perfect_matching.*;
+import matching.bipartite_vertex_cover.*;
+import matching.non_bipartite_spanning_tree.*;
 
 
 import java.applet.*;    
