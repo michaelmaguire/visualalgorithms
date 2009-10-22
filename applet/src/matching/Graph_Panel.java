@@ -68,11 +68,13 @@ class Graph_Panel extends Panel implements Runnable, Algorithm_Support
 	private int original_moving_x;
 	private int original_moving_y;
 	
-	boolean drag_node = false;
-	int drag_node_x;
-	int drag_node_y;
+	public boolean drag_node = false;
+	public int drag_node_x;
+	public int drag_node_y;
 	
-	
+/**goddyn*/
+        public int animation_delay;
+        public float growth_increment = 10.0f;
 	
 	private void draw_drag_node(Graphics g)
 	{
@@ -140,8 +142,7 @@ class Graph_Panel extends Panel implements Runnable, Algorithm_Support
 
 			{
 
-
-				animator.sleep(70);
+				animator.sleep(animation_delay);
 
 			}
 
@@ -301,7 +302,8 @@ class Graph_Panel extends Panel implements Runnable, Algorithm_Support
 
 
 
-	private void add_node( int x, int y, boolean opposite_colour_of_checkbox_state)
+	//private void add_node( int x, int y, boolean opposite_colour_of_checkbox_state)
+	public void add_node( int x, int y, boolean opposite_colour_of_checkbox_state)
 	{
 
 		nodes.addElement( new node(x,y, ( opposite_colour_of_checkbox_state ^ blue_Checkbox.getState()), (short) (nodes.size() + 1)) );
@@ -387,7 +389,7 @@ class Graph_Panel extends Panel implements Runnable, Algorithm_Support
 
 		float growth_this_time = distance_to_grow;
 
-		float growth_increment = 15.0f;
+		/**float growth_increment = 1.0f;*/
 
 
 		if( distance_to_grow == 0f )
@@ -1064,6 +1066,22 @@ class Graph_Panel extends Panel implements Runnable, Algorithm_Support
 	}
 
 
+/**goddyn*/
+        public void print_points()
+        {
+		node temp_node;
+		for (Enumeration e = nodes.elements() ; e.hasMoreElements() ;) 
+		{
+			if( (temp_node = (node) e.nextElement()) != null )
+                        {
+				System.out.println((int) temp_node.x +" "+
+                                                   (int) temp_node.y +" "+
+                                                   ( temp_node.blue ? 1 : 0 ) );
+                        }
+		}
+        }
+
+
 
 
 
@@ -1072,30 +1090,6 @@ class Graph_Panel extends Panel implements Runnable, Algorithm_Support
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
