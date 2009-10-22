@@ -2,128 +2,263 @@ package matching;
 
 import java.awt.*; 
 
-
+import java.lang.Integer;
+import java.util.Vector;
+import java.lang.Math;
 
 class node extends Object
+
 {
 
-	int x, y;
-	int number_of_disks=0;
-	disk disks[] = new disk[500];
-	boolean married;
+	static final int close_enough = 10;
+
+
+	short node_number;
+
+	float x, y;
+
+	Vector disks = new Vector(15);
+
 	boolean should_grow=false;
+
 	boolean should_shrink=false;
+
 	boolean blue=false;
+	
+	boolean selected;
 
-	node()
+
+
+	node( int x1, int y1, boolean isblue, short node_number )
+
 	{
-		x = 0;
-		y = 0;
 
-		disks[number_of_disks] = new disk(0);
-		number_of_disks++;
-	}
+		this.node_number = node_number;
 
-	node( int x1, int y1 )
-	{
 		x = x1;
+
 		y = y1;
 
-		disks[number_of_disks] = new disk(0);
-		number_of_disks++;
-	}
-
-	node( int x1, int y1, boolean isblue )
-	{
-		x = x1;
-		y = y1;
 		blue = isblue;
 
-		if( isblue )
+		if( blue )
+
 		{ 
-			disks[number_of_disks] = new disk(0, Color.blue);
+
+			disks.addElement( (Object) new disk(this, 0, Color.blue) );
+
+		}
+
+		else
+
+		{
+
+			disks.addElement( (Object) new disk(this, 0, Color.red) );
+
+		}
+
+	}
+
+
+	void reset()
+	{
+	
+		disks = new Vector(15);
+
+		boolean should_grow=false;
+
+		boolean should_shrink=false;
+
+		if( blue )
+
+		{ 
+
+			disks.addElement( (Object) new disk(this, 0, Color.blue) );
+
+		}
+
+		else
+
+		{
+
+			disks.addElement( (Object) new disk(this, 0, Color.red) );
+
+		}
+		
+	}
+	
+
+	boolean close_to( int x, int y )
+	{
+		
+		if( Math.abs(this.x - x ) < close_enough && Math.abs( this.y -y ) < close_enough)
+		{
+			return( true );
 		}
 		else
 		{
-			disks[number_of_disks] = new disk(0, Color.red);
+			return(false );
 		}
-		number_of_disks++;
+	
 	}
 
-	int add_radius()
+
+
+
+	void add_radius()
 	{
-		disks[number_of_disks] = new disk(disks[number_of_disks-1].radius);
-		return(++number_of_disks);
+
+		disks.addElement( (Object) new disk(this, ((disk) disks.lastElement()).radius) );
 	}
 
+
+	boolean remove_radius()
+
+	{
+
+
+		if( disks.isEmpty() )
+		{
+			return( false );
+		}
+		else
+		{
+			// repair the order of the disk drawing before removing this disk
+			((disk) disks.lastElement()).prepare_to_remove();
+
+			disks.removeElementAt( disks.size()-1 );
+		
+			return( true );
+		}
+	}
+
+
+	void prepare_to_remove()
+	{
+
+		// keep removing all the radius until there are no more
+		while( remove_radius() );
+	
+	}
 
 	disk outermost_disk()
+
 	{
-		return( disks[number_of_disks-1] );
+
+		return( (disk) disks.lastElement() );
+
 	}
+
+
+
 
 
 	void save( int x1, int y1 )
+
 	{
+
 		x = x1;
+
 		y = y1;
+
 	}
 
 
-	void paint_disk(Graphics g, int level)
-	{
-		if( level < number_of_disks )
-			disks[level].paint( g, x, y );
-	}
 
-        void paint_bipartite_disk(Graphics g, int level)
-        {
-                if( level < number_of_disks )
-                        disks[level].bipartite_paint( g, x, y );
-        }
+
 
 	void paint(Graphics g)
+
 	{
+
+
 
 		g.setColor(Color.black);
 
-		g.fillOval(x - 3, y - 3, 6, 6 );
+
+
+		g.fillOval(((int)x) - 3, ((int)y) - 3, 6, 6 );
+
+		if( selected )
+		{
+			g.drawOval(((int)x) - 5, ((int)y) - 5, 10, 10 );
+		}
 
 		if( blue )
+
 		{
+
 			g.setColor(Color.blue);
+
 		}
+
 		else
+
 		{
+
 			g.setColor(Color.red);
+
 		}
 
-		g.fillOval(x - 2, y - 2, 4, 4 );
+
+
+		g.fillOval(((int)x) - 2, ((int)y) - 2, 4, 4 );
+		
+		g.setColor(Color.black);
+		
+		g.drawString( Integer.toString(node_number), (int)x+4, (int)y+8 );
+
 	}
 
-	int x()
+
+
+	float x()
+
 	{
+
 		return( x );
+
 	}
 
-	int y()
+
+
+	float y()
+
 	{
+
 		return( y );
+
 	}
+
+
+
 
 
 	float distance_to( node other_node )
+
 	{
 
+
+
 		return( (float)(  Math.sqrt( (x - other_node.x)*(x - other_node.x) +
+
 				(y - other_node.y)*(y - other_node.y) ) ) );
 
+
+
 	}
+
 
 
 	boolean is_blue()
+
 	{
+
 		return(blue);
+
 	}
 
+
+
 }
+
