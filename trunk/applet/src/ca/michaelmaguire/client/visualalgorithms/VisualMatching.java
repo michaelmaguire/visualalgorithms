@@ -1,6 +1,6 @@
 // Visual_Matching.java - Michael Maguire - 14 Apr 96
 
-package matching;
+package ca.michaelmaguire.client.visualalgorithms;
 
 import java.applet.*;
 

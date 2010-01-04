@@ -1,6 +1,6 @@
 // Algorithms_Provide.java - Michael Maguire - 14 Apr 96
 
-package matching;
+package ca.michaelmaguire.client.visualalgorithms;
 
 // every algorithm should be able to do the following
 

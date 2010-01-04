@@ -1,6 +1,6 @@
 //implements a combinatorial graph object with disk
 
-package matching;
+package ca.michaelmaguire.client.visualalgorithms;
 
 // do not import these or we get a name conflict
 //import matching.non_bipartite_perfect_matching.*;
@@ -298,7 +298,7 @@ class GraphPanel extends Panel implements Runnable, AlgorithmSupport
 
 			algorithm_is_bipartite = true;
 
-			the_algorithm = new matching.bipartite_perfect_matching.Algorithm((AlgorithmSupport) this, (short) nodes
+			the_algorithm = new ca.michaelmaguire.client.visualalgorithms.bipartite_perfect_matching.Algorithm((AlgorithmSupport) this, (short) nodes
 					.size());
 
 		}
@@ -309,7 +309,7 @@ class GraphPanel extends Panel implements Runnable, AlgorithmSupport
 
 			algorithm_is_bipartite = false;
 
-			the_algorithm = new matching.non_bipartite_spanning_tree.Algorithm((AlgorithmSupport) this, (short) nodes
+			the_algorithm = new ca.michaelmaguire.client.visualalgorithms.non_bipartite_spanning_tree.Algorithm((AlgorithmSupport) this, (short) nodes
 					.size());
 
 		}
@@ -320,7 +320,7 @@ class GraphPanel extends Panel implements Runnable, AlgorithmSupport
 
 			algorithm_is_bipartite = false;
 
-			the_algorithm = new matching.non_bipartite_perfect_matching.Algorithm((AlgorithmSupport) this,
+			the_algorithm = new ca.michaelmaguire.client.visualalgorithms.non_bipartite_perfect_matching.Algorithm((AlgorithmSupport) this,
 					(short) nodes.size());
 
 		}
@@ -331,7 +331,7 @@ class GraphPanel extends Panel implements Runnable, AlgorithmSupport
 
 			algorithm_is_bipartite = true;
 
-			the_algorithm = new matching.bipartite_vertex_cover.Algorithm((AlgorithmSupport) this, (short) nodes
+			the_algorithm = new ca.michaelmaguire.client.visualalgorithms.bipartite_vertex_cover.Algorithm((AlgorithmSupport) this, (short) nodes
 					.size());
 
 		}
