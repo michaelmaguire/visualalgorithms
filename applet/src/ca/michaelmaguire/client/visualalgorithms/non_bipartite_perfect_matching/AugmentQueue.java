@@ -1,8 +1,9 @@
-package matching.non_bipartite_perfect_matching;
+package ca.michaelmaguire.client.visualalgorithms.non_bipartite_perfect_matching;
 
-import matching.AlgorithmSupport;
 
 import java.util.Vector;
+
+import ca.michaelmaguire.client.visualalgorithms.AlgorithmSupport;
 
 // May 1997 java version of:
 // augment_queue_for_nb_p_m_pr.h -- Michael Maguire -- August 93

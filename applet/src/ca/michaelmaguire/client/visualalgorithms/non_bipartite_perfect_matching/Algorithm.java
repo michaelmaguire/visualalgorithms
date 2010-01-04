@@ -4,10 +4,10 @@
 
 // nonbipartite perfect matching algorithm
 
-package matching.non_bipartite_perfect_matching;
+package ca.michaelmaguire.client.visualalgorithms.non_bipartite_perfect_matching;
 
-import matching.AlgorithmSupport;
-import matching.AlgorithmsProvide;
+import ca.michaelmaguire.client.visualalgorithms.AlgorithmSupport;
+import ca.michaelmaguire.client.visualalgorithms.AlgorithmsProvide;
 
 public class Algorithm implements AlgorithmsProvide
 {

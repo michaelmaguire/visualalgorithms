@@ -1,11 +1,12 @@
 // Nonbipartite_Spanning_Tree.java - Michael Maguire - 14 Apr 96
 
-package matching.non_bipartite_spanning_tree;
+package ca.michaelmaguire.client.visualalgorithms.non_bipartite_spanning_tree;
 
-import matching.AlgorithmSupport;
-import matching.AlgorithmsProvide;
 
 import java.awt.*; //for debugging
+
+import ca.michaelmaguire.client.visualalgorithms.AlgorithmSupport;
+import ca.michaelmaguire.client.visualalgorithms.AlgorithmsProvide;
 
 public class Algorithm implements AlgorithmsProvide
 {

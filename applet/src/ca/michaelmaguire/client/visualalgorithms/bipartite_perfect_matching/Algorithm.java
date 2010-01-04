@@ -1,11 +1,12 @@
 // Bipartite_Perfect_Matching.java - Michael Maguire - 28 Apr 96
 
-package matching.bipartite_perfect_matching;
+package ca.michaelmaguire.client.visualalgorithms.bipartite_perfect_matching;
 
-import matching.AlgorithmSupport;
-import matching.AlgorithmsProvide;
 
 import java.awt.*; //for debugging
+
+import ca.michaelmaguire.client.visualalgorithms.AlgorithmSupport;
+import ca.michaelmaguire.client.visualalgorithms.AlgorithmsProvide;
 
 // rougly, we use a multi-linked binary tree:
 //	each node Y has a pointer "left" called tight_away_from_tree_root,

@@ -1,4 +1,4 @@
-package matching;
+package ca.michaelmaguire.client.visualalgorithms;
 
 import java.awt.*;
 

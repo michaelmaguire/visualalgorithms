@@ -4,7 +4,7 @@
 
 //  should ever need for talking to the rest of the program
 
-package matching;
+package ca.michaelmaguire.client.visualalgorithms;
 
 public interface AlgorithmSupport
 {
