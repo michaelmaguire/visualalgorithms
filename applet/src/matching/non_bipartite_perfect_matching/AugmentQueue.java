@@ -1,6 +1,6 @@
 package matching.non_bipartite_perfect_matching;
 
-import matching.Algorithm_Support;
+import matching.AlgorithmSupport;
 
 import java.util.Vector;
 
@@ -18,43 +18,42 @@ import java.util.Vector;
 // 	should instead call the appropriate function supplied by augment_queue_for_nb_p_m_pr.h
 // 	to deal with these structures
 
-class augment_queue_item extends Object
+class AugmentQueue extends Vector
 {
-	private short	node_number1, node_number2;
-	private boolean	marry;
-
-	public augment_queue_item(short node_number1, short node_number2, boolean marry)
+	private static class AugmentQueueItem extends Object
 	{
-		this.node_number1 = node_number1;
-		this.node_number2 = node_number2;
-		this.marry = marry;
-	}
+		private short	node_number1, node_number2;
+		private boolean	marry;
 
-	public void output(Algorithm_Support support)
-	{
+		public AugmentQueueItem(short node_number1, short node_number2, boolean marry)
+		{
+			this.node_number1 = node_number1;
+			this.node_number2 = node_number2;
+			this.marry = marry;
+		}
 
-		if (marry)
+		public void output(AlgorithmSupport support)
 		{
 
-			support.output_remove_tight_line(node_number1, node_number2);
-			support.output_marry(node_number1, node_number2);
+			if (marry)
+			{
+
+				support.output_remove_tight_line(node_number1, node_number2);
+				support.output_marry(node_number1, node_number2);
+			}
+			else
+			{
+				support.output_divorce(node_number1, node_number2);
+				support.output_add_tight_line(node_number1, node_number2);
+			}
 		}
-		else
-		{
-			support.output_divorce(node_number1, node_number2);
-			support.output_add_tight_line(node_number1, node_number2);
-		}
+
 	}
-
-}
-
-class augment_queue_for_non_bipartite_perfect_matching extends Vector
-{
 
 	void put_new_augment_item_into_queue(short node_number1, short node_number2, boolean marry)
 	{
 
-		addElement(new augment_queue_item(node_number1, node_number2, marry));
+		addElement(new AugmentQueueItem(node_number1, node_number2, marry));
 	}
 
 	boolean is_there_an_item_to_do()
@@ -62,11 +61,11 @@ class augment_queue_for_non_bipartite_perfect_matching extends Vector
 		return (!isEmpty());
 	}
 
-	void do_next_augment_item(Algorithm_Support support)
+	void do_next_augment_item(AlgorithmSupport support)
 	{
 
 		// output the first element
-		((augment_queue_item) firstElement()).output(support);
+		((AugmentQueueItem) firstElement()).output(support);
 
 		// remove the first element
 		removeElement(firstElement());

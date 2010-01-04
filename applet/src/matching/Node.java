@@ -6,8 +6,7 @@ import java.lang.Integer;
 import java.util.Vector;
 import java.lang.Math;
 
-class node extends Object
-
+class Node extends Object
 {
 
 	static final int	close_enough	= 10;
@@ -26,8 +25,7 @@ class node extends Object
 
 	boolean				selected;
 
-	node(int x1, int y1, boolean isblue, short node_number)
-
+	Node(int x1, int y1, boolean isblue, short node_number)
 	{
 
 		this.node_number = node_number;
@@ -42,7 +40,7 @@ class node extends Object
 
 		{
 
-			disks.addElement((Object) new disk(this, 0, Color.blue));
+			disks.addElement((Object) new Disk(this, 0, Color.blue));
 
 		}
 
@@ -50,7 +48,7 @@ class node extends Object
 
 		{
 
-			disks.addElement((Object) new disk(this, 0, Color.red));
+			disks.addElement((Object) new Disk(this, 0, Color.red));
 
 		}
 
@@ -69,7 +67,7 @@ class node extends Object
 
 		{
 
-			disks.addElement((Object) new disk(this, 0, Color.blue));
+			disks.addElement((Object) new Disk(this, 0, Color.blue));
 
 		}
 
@@ -77,7 +75,7 @@ class node extends Object
 
 		{
 
-			disks.addElement((Object) new disk(this, 0, Color.red));
+			disks.addElement((Object) new Disk(this, 0, Color.red));
 
 		}
 
@@ -100,7 +98,7 @@ class node extends Object
 	void add_radius()
 	{
 
-		disks.addElement((Object) new disk(this, ((disk) disks.lastElement()).radius));
+		disks.addElement((Object) new Disk(this, ((Disk) disks.lastElement()).radius));
 	}
 
 	boolean remove_radius()
@@ -114,7 +112,7 @@ class node extends Object
 		else
 		{
 			// repair the order of the disk drawing before removing this disk
-			((disk) disks.lastElement()).prepare_to_remove();
+			((Disk) disks.lastElement()).prepare_to_remove();
 
 			disks.removeElementAt(disks.size() - 1);
 
@@ -131,16 +129,14 @@ class node extends Object
 
 	}
 
-	disk outermost_disk()
-
+	Disk outermost_disk()
 	{
 
-		return ((disk) disks.lastElement());
+		return ((Disk) disks.lastElement());
 
 	}
 
 	void save(int x1, int y1)
-
 	{
 
 		x = x1;
@@ -150,7 +146,6 @@ class node extends Object
 	}
 
 	void paint(Graphics g)
-
 	{
 
 		g.setColor(Color.black);
@@ -187,7 +182,6 @@ class node extends Object
 	}
 
 	float x()
-
 	{
 
 		return (x);
@@ -195,15 +189,13 @@ class node extends Object
 	}
 
 	float y()
-
 	{
 
 		return (y);
 
 	}
 
-	float distance_to(node other_node)
-
+	float distance_to(Node other_node)
 	{
 
 		return ((float) (Math.sqrt((x - other_node.x) * (x - other_node.x) +
@@ -213,7 +205,6 @@ class node extends Object
 	}
 
 	boolean is_blue()
-
 	{
 
 		return (blue);

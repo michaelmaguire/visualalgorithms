@@ -2,18 +2,18 @@ package matching;
 
 import java.awt.*;
 
-class disk extends Object
+class Disk extends Object
 {
 
-	static disk	first_disk_to_be_drawn	= null;
+	static Disk	first_disk_to_be_drawn	= null;
 
-	node		my_node;
+	Node		my_node;
 
 	float		radius;
 
 	Color		colour;
 
-	disk		next_disk_to_be_drawn;
+	Disk		next_disk_to_be_drawn;
 
 	/**
 	 * algorithms which need moats must have the disks surrounding each node
@@ -23,7 +23,7 @@ class disk extends Object
 
 	static void paint_non_bipartite_disks_in_correct_order(Graphics g)
 	{
-		disk temp_disk;
+		Disk temp_disk;
 
 		for (temp_disk = first_disk_to_be_drawn; temp_disk != null; temp_disk = temp_disk.next_disk_to_be_drawn)
 		{
@@ -33,7 +33,7 @@ class disk extends Object
 
 	static void paint_bipartite_disks_in_correct_order(Graphics g)
 	{
-		disk temp_disk;
+		Disk temp_disk;
 
 		// paint positive disks
 		for (temp_disk = first_disk_to_be_drawn; temp_disk != null; temp_disk = temp_disk.next_disk_to_be_drawn)
@@ -80,7 +80,7 @@ class disk extends Object
 	 */
 	void prepare_to_remove()
 	{
-		disk previous_disk, temp_disk;
+		Disk previous_disk, temp_disk;
 
 		// special case -- first disk in list
 		if (first_disk_to_be_drawn == this)
@@ -106,7 +106,7 @@ class disk extends Object
 
 	}
 
-	disk(node my_node, float radius)
+	Disk(Node my_node, float radius)
 	{
 
 		this.my_node = my_node;
@@ -121,7 +121,7 @@ class disk extends Object
 
 	}
 
-	disk(node my_node, float radius, Color colour)
+	Disk(Node my_node, float radius, Color colour)
 	{
 
 		this.my_node = my_node;

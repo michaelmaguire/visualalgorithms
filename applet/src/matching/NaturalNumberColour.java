@@ -4,12 +4,10 @@ import java.awt.*;
 
 import java.lang.Math;
 
-class Natural_Number_Colour extends Object
-
+class NaturalNumberColour extends Object
 {
 
 	public static Color convert(short natural_number_colour)
-
 	{
 
 		Color c = new Color(Math.abs(187 - (natural_number_colour - 1) * 113) % 255,

@@ -2,29 +2,20 @@
 
 package matching.bipartite_perfect_matching;
 
-import matching.Algorithm_Support;
-import matching.Algorithms_Provide;
+import matching.AlgorithmSupport;
+import matching.AlgorithmsProvide;
 
 import java.awt.*; //for debugging
 
 // rougly, we use a multi-linked binary tree:
-
 //	each node Y has a pointer "left" called tight_away_from_tree_root,
-
 // 	a pointer "right" called sibling -- these two are used for traversing the binary tree
-
 //	-- and a pointer sort of back "up" the tree called tight_towards_tree_root
-
 // 	to the node with which node Y is tight -- used in augmenting only
-
 //  -- sibling is used only in nodes of colour opposite to tree_root and indicates
-
 //	other nodes which have been bumped by the node "up" indicated in tight_towards_tree_root
-
 //
-
 //											
-
 // the picture:				tree_root:                X
 //                                                                _
 //                                                               /| ^  ^
@@ -58,41 +49,40 @@ import java.awt.*; //for debugging
 //
 //
 
-class node
+public class Algorithm implements AlgorithmsProvide
 {
+	private static class Node
+	{
 
-	short	node_number;
+		short	node_number;
 
-	float	radius;
+		float	radius;
 
-	node	spouse;
+		Node	spouse;
 
-	node	tight_towards_tree_root, tight_away_from_tree_root, sibling;
+		Node	tight_towards_tree_root, tight_away_from_tree_root, sibling;
 
-	node	next_node;
+		Node	next_node;
 
-}
+	}
 
-public class Algorithm implements Algorithms_Provide
-{
-
-	private Algorithm_Support	support;						// what we can
+	private AlgorithmSupport	support;		// what we can
 	// rely on for
 	// input and
 	// output
 
-	private node				first_node;
+	private Node				first_node;
 
-	private node				tree_root;
+	private Node				tree_root;
 
-	private node				the_bumper;					// the node in
+	private Node				the_bumper;					// the node in
 	// the tree
 	// which grows
 	// to bump some
 	// node out of
 	// the tree
 
-	private node				the_bumpee;					// the node out
+	private Node				the_bumpee;					// the node out
 	// of the tree
 	// which gets
 	// bumped
@@ -101,9 +91,9 @@ public class Algorithm implements Algorithms_Provide
 
 	private boolean				augmenting_needs_doing;
 
-	private node				current_augment_node;
+	private Node				current_augment_node;
 
-	public Algorithm(Algorithm_Support the_support, short number_of_nodes)
+	public Algorithm(AlgorithmSupport the_support, short number_of_nodes)
 	{
 
 		support = the_support;
@@ -191,7 +181,6 @@ public class Algorithm implements Algorithms_Provide
 					// there are more eligible nodes, so tell the world we're
 					// waiting
 
-
 					support.output_waiting_for_next_node(true);
 
 				}
@@ -200,7 +189,6 @@ public class Algorithm implements Algorithms_Provide
 			else
 			{
 				// we still have more augmenting to do
-
 
 				support.output_augmenting_now(true);
 
@@ -212,7 +200,6 @@ public class Algorithm implements Algorithms_Provide
 		else
 		{
 			// no augmenting needs doing at the moment
-
 
 			// safety checks
 
@@ -267,7 +254,7 @@ public class Algorithm implements Algorithms_Provide
 					{
 						// tree_root was null, so the
 						// node_number was invalid
-						return (false); 
+						return (false);
 					}
 				}
 
@@ -399,10 +386,10 @@ public class Algorithm implements Algorithms_Provide
 	 * @param node_number
 	 * @return
 	 */
-	private node find_node_with_number(short node_number)
+	private Node find_node_with_number(short node_number)
 	{
 
-		node temp_node;
+		Node temp_node;
 
 		short node_number_counter;
 
@@ -437,12 +424,12 @@ public class Algorithm implements Algorithms_Provide
 
 	}
 
-	private node find_first_eligible_node()
+	private Node find_first_eligible_node()
 	{
 
 		// returns null if no unmarried node was found
 
-		node temp_node, eligible_node = null;
+		Node temp_node, eligible_node = null;
 
 		// now look through the nodes until we find an unmarried node
 
@@ -514,7 +501,7 @@ public class Algorithm implements Algorithms_Provide
 
 	}
 
-	private boolean same_colour(node node1, node node2)
+	private boolean same_colour(Node node1, Node node2)
 	{
 
 		// safety check
@@ -536,7 +523,7 @@ public class Algorithm implements Algorithms_Provide
 
 	}
 
-	private void shrink_and_grow_the_tree(node the_node)
+	private void shrink_and_grow_the_tree(Node the_node)
 	{
 
 		// safety check
@@ -587,7 +574,7 @@ public class Algorithm implements Algorithms_Provide
 	// X.tight_away_from_tree_root
 
 	// is non-null
-	private void make_node_tight_with_a_further_node(node where, node the_node_to_be_put)
+	private void make_node_tight_with_a_further_node(Node where, Node the_node_to_be_put)
 	{
 
 		// safety check
@@ -620,10 +607,10 @@ public class Algorithm implements Algorithms_Provide
 
 	}
 
-	private void find_the_next_bump(node the_node)
+	private void find_the_next_bump(Node the_node)
 	{
 
-		node temp_node;
+		Node temp_node;
 
 		float temp_distance;
 
@@ -733,7 +720,7 @@ public class Algorithm implements Algorithms_Provide
 
 	}
 
-	private void reset_tree(node the_node)
+	private void reset_tree(Node the_node)
 	{
 
 		// safety check
@@ -784,7 +771,7 @@ public class Algorithm implements Algorithms_Provide
 	private void add_node()
 	{
 
-		node temp_node, previous_node;
+		Node temp_node, previous_node;
 
 		short node_number_counter;
 
@@ -811,7 +798,7 @@ public class Algorithm implements Algorithms_Provide
 
 		}
 
-		temp_node = new node();
+		temp_node = new Node();
 
 		// take special action if the new node is the first node to be added to
 		// the graph
