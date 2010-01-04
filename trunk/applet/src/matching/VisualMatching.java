@@ -6,10 +6,10 @@ import java.applet.*;
 
 import java.awt.*;
 
-public class Visual_Matching extends Applet
+public class VisualMatching extends Applet
 {
 
-	private Graph_Panel	the_graph;
+	private GraphPanel	the_graph;
 
 	private Scrollbar	delay_control;
 
@@ -20,7 +20,7 @@ public class Visual_Matching extends Applet
 
 		setLayout(new BorderLayout());
 
-		the_graph = new Graph_Panel();
+		the_graph = new GraphPanel();
 
 		/** goddyn */
 		// the_graph.resize( 1900,1900 );

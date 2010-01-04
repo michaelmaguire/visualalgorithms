@@ -15,7 +15,7 @@ import java.awt.*;
 import java.util.Vector;
 import java.util.Enumeration;
 
-class Graph_Panel extends Panel implements Runnable, Algorithm_Support
+class GraphPanel extends Panel implements Runnable, AlgorithmSupport
 
 {
 
@@ -35,7 +35,7 @@ class Graph_Panel extends Panel implements Runnable, Algorithm_Support
 
 	private boolean				still_adding_nodes			= true;
 
-	private Algorithms_Provide	the_algorithm;
+	private AlgorithmsProvide	the_algorithm;
 
 	private float				distance_to_grow			= 0;
 
@@ -218,7 +218,7 @@ class Graph_Panel extends Panel implements Runnable, Algorithm_Support
 
 		edges = new Edges((short) nodes.size());
 
-		disk.reset_disks();
+		Disk.reset_disks();
 
 		still_adding_nodes = true;
 
@@ -235,7 +235,7 @@ class Graph_Panel extends Panel implements Runnable, Algorithm_Support
 	void reset_to_nodes_only()
 	{
 
-		node temp_node;
+		Node temp_node;
 
 		stop();
 
@@ -249,12 +249,12 @@ class Graph_Panel extends Panel implements Runnable, Algorithm_Support
 
 		animation_to_do = false;
 
-		disk.reset_disks();
+		Disk.reset_disks();
 
 		for (Enumeration e = nodes.elements(); e.hasMoreElements();)
 		{
 
-			if ((temp_node = (node) e.nextElement()) != null)
+			if ((temp_node = (Node) e.nextElement()) != null)
 			{
 
 				temp_node.reset();
@@ -272,7 +272,7 @@ class Graph_Panel extends Panel implements Runnable, Algorithm_Support
 	public void add_node(int x, int y, boolean opposite_colour_of_checkbox_state)
 	{
 
-		nodes.addElement(new node(x, y, (opposite_colour_of_checkbox_state ^ blue_Checkbox.getState()), (short) (nodes
+		nodes.addElement(new Node(x, y, (opposite_colour_of_checkbox_state ^ blue_Checkbox.getState()), (short) (nodes
 				.size() + 1)));
 
 	}
@@ -280,13 +280,13 @@ class Graph_Panel extends Panel implements Runnable, Algorithm_Support
 	private void move_node(short node_number, int x, int y)
 	{
 
-		((node) nodes.elementAt((int) node_number - 1)).save(x, y);
+		((Node) nodes.elementAt((int) node_number - 1)).save(x, y);
 	}
 
 	private void toggle_select_status_of_node(short node_number)
 	{
 
-		((node) nodes.elementAt((int) node_number - 1)).selected = !((node) nodes.elementAt((int) node_number - 1)).selected;
+		((Node) nodes.elementAt((int) node_number - 1)).selected = !((Node) nodes.elementAt((int) node_number - 1)).selected;
 	}
 
 	private synchronized void setup_algorithm()
@@ -298,7 +298,7 @@ class Graph_Panel extends Panel implements Runnable, Algorithm_Support
 
 			algorithm_is_bipartite = true;
 
-			the_algorithm = new matching.bipartite_perfect_matching.Algorithm((Algorithm_Support) this, (short) nodes
+			the_algorithm = new matching.bipartite_perfect_matching.Algorithm((AlgorithmSupport) this, (short) nodes
 					.size());
 
 		}
@@ -309,7 +309,7 @@ class Graph_Panel extends Panel implements Runnable, Algorithm_Support
 
 			algorithm_is_bipartite = false;
 
-			the_algorithm = new matching.non_bipartite_spanning_tree.Algorithm((Algorithm_Support) this, (short) nodes
+			the_algorithm = new matching.non_bipartite_spanning_tree.Algorithm((AlgorithmSupport) this, (short) nodes
 					.size());
 
 		}
@@ -320,7 +320,7 @@ class Graph_Panel extends Panel implements Runnable, Algorithm_Support
 
 			algorithm_is_bipartite = false;
 
-			the_algorithm = new matching.non_bipartite_perfect_matching.Algorithm((Algorithm_Support) this,
+			the_algorithm = new matching.non_bipartite_perfect_matching.Algorithm((AlgorithmSupport) this,
 					(short) nodes.size());
 
 		}
@@ -331,7 +331,7 @@ class Graph_Panel extends Panel implements Runnable, Algorithm_Support
 
 			algorithm_is_bipartite = true;
 
-			the_algorithm = new matching.bipartite_vertex_cover.Algorithm((Algorithm_Support) this, (short) nodes
+			the_algorithm = new matching.bipartite_vertex_cover.Algorithm((AlgorithmSupport) this, (short) nodes
 					.size());
 
 		}
@@ -344,7 +344,7 @@ class Graph_Panel extends Panel implements Runnable, Algorithm_Support
 
 		// /System.out.println("distance_to_grow: " + distance_to_grow);
 
-		node temp_node;
+		Node temp_node;
 
 		float growth_this_time = distance_to_grow;
 
@@ -380,7 +380,7 @@ class Graph_Panel extends Panel implements Runnable, Algorithm_Support
 		for (Enumeration e = nodes.elements(); e.hasMoreElements();)
 		{
 
-			if ((temp_node = (node) e.nextElement()) != null)
+			if ((temp_node = (Node) e.nextElement()) != null)
 			{
 
 				if (temp_node.should_grow)
@@ -422,7 +422,7 @@ class Graph_Panel extends Panel implements Runnable, Algorithm_Support
 
 		Dimension d = size();
 
-		node temp_node;
+		Node temp_node;
 
 		if ((offscreen == null) || (d.width != offscreensize.width) || (d.height != offscreensize.height))
 
@@ -446,7 +446,7 @@ class Graph_Panel extends Panel implements Runnable, Algorithm_Support
 
 		{
 
-			disk.paint_bipartite_disks_in_correct_order(offgraphics);
+			Disk.paint_bipartite_disks_in_correct_order(offgraphics);
 
 		}
 
@@ -454,7 +454,7 @@ class Graph_Panel extends Panel implements Runnable, Algorithm_Support
 
 		{
 
-			disk.paint_non_bipartite_disks_in_correct_order(offgraphics);
+			Disk.paint_non_bipartite_disks_in_correct_order(offgraphics);
 
 		}
 
@@ -463,7 +463,7 @@ class Graph_Panel extends Panel implements Runnable, Algorithm_Support
 		for (Enumeration e = nodes.elements(); e.hasMoreElements();)
 		{
 
-			if ((temp_node = (node) e.nextElement()) != null)
+			if ((temp_node = (Node) e.nextElement()) != null)
 			{
 				temp_node.paint(offgraphics);
 			}
@@ -483,12 +483,12 @@ class Graph_Panel extends Panel implements Runnable, Algorithm_Support
 	short find_node_at_position(int x, int y)
 	{
 
-		node temp_node;
+		Node temp_node;
 
 		for (Enumeration e = nodes.elements(); e.hasMoreElements();)
 		{
 
-			if ((temp_node = (node) e.nextElement()) != null)
+			if ((temp_node = (Node) e.nextElement()) != null)
 			{
 				if (temp_node.close_to(x, y))
 				{
@@ -675,13 +675,13 @@ class Graph_Panel extends Panel implements Runnable, Algorithm_Support
 	private void renumber_all_nodes()
 	{
 
-		node temp_node;
+		Node temp_node;
 		short counter = 0;
 
 		for (Enumeration e = nodes.elements(); e.hasMoreElements();)
 		{
 
-			if ((temp_node = (node) e.nextElement()) != null)
+			if ((temp_node = (Node) e.nextElement()) != null)
 			{
 
 				temp_node.node_number = ++counter;
@@ -695,7 +695,7 @@ class Graph_Panel extends Panel implements Runnable, Algorithm_Support
 	public void delete()
 	{
 
-		node temp_node;
+		Node temp_node;
 
 		boolean not_done;
 
@@ -715,7 +715,7 @@ class Graph_Panel extends Panel implements Runnable, Algorithm_Support
 				for (Enumeration e = nodes.elements(); e.hasMoreElements();)
 				{
 
-					if ((temp_node = (node) e.nextElement()) != null)
+					if ((temp_node = (Node) e.nextElement()) != null)
 					{
 						if (temp_node.selected)
 						{
@@ -786,7 +786,7 @@ class Graph_Panel extends Panel implements Runnable, Algorithm_Support
 
 	{
 
-		return (((node) nodes.elementAt((int) node_number1 - 1)).distance_to(((node) nodes
+		return (((Node) nodes.elementAt((int) node_number1 - 1)).distance_to(((Node) nodes
 				.elementAt((int) node_number2 - 1))));
 
 	}
@@ -803,7 +803,7 @@ class Graph_Panel extends Panel implements Runnable, Algorithm_Support
 
 	{
 
-		return (((node) nodes.elementAt((int) node_number - 1)).is_blue());
+		return (((Node) nodes.elementAt((int) node_number - 1)).is_blue());
 
 	}
 
@@ -843,7 +843,7 @@ class Graph_Panel extends Panel implements Runnable, Algorithm_Support
 
 	{
 
-		((node) nodes.elementAt((int) node_number - 1)).should_grow = true;
+		((Node) nodes.elementAt((int) node_number - 1)).should_grow = true;
 
 	}
 
@@ -851,7 +851,7 @@ class Graph_Panel extends Panel implements Runnable, Algorithm_Support
 
 	{
 
-		((node) nodes.elementAt((int) node_number - 1)).should_shrink = true;
+		((Node) nodes.elementAt((int) node_number - 1)).should_shrink = true;
 
 	}
 
@@ -868,7 +868,7 @@ class Graph_Panel extends Panel implements Runnable, Algorithm_Support
 	public void output_add_tight_line(short node_number1, short node_number2)
 	{
 
-		edges.add_tight_edge((node) nodes.elementAt((int) node_number1 - 1), (node) nodes
+		edges.add_tight_edge((Node) nodes.elementAt((int) node_number1 - 1), (Node) nodes
 				.elementAt((int) node_number2 - 1));
 
 	}
@@ -876,7 +876,7 @@ class Graph_Panel extends Panel implements Runnable, Algorithm_Support
 	public void output_remove_tight_line(short node_number1, short node_number2)
 	{
 
-		edges.remove_tight_edge((node) nodes.elementAt((int) node_number1 - 1), (node) nodes
+		edges.remove_tight_edge((Node) nodes.elementAt((int) node_number1 - 1), (Node) nodes
 				.elementAt((int) node_number2 - 1));
 
 	}
@@ -885,7 +885,7 @@ class Graph_Panel extends Panel implements Runnable, Algorithm_Support
 	{
 
 		edges
-				.marry_edge((node) nodes.elementAt((int) node_number1 - 1), (node) nodes
+				.marry_edge((Node) nodes.elementAt((int) node_number1 - 1), (Node) nodes
 						.elementAt((int) node_number2 - 1));
 
 	}
@@ -893,7 +893,7 @@ class Graph_Panel extends Panel implements Runnable, Algorithm_Support
 	public void output_divorce(short node_number1, short node_number2)
 	{
 
-		edges.divorce_edge((node) nodes.elementAt((int) node_number1 - 1), (node) nodes
+		edges.divorce_edge((Node) nodes.elementAt((int) node_number1 - 1), (Node) nodes
 				.elementAt((int) node_number2 - 1));
 
 	}
@@ -911,14 +911,14 @@ class Graph_Panel extends Panel implements Runnable, Algorithm_Support
 		// System.out.println("in set_out_colour" + "node " + node_number +" " +
 		// colour );
 
-		((node) nodes.elementAt((int) node_number - 1)).outermost_disk().change_colour(
-				Natural_Number_Colour.convert(colour));
+		((Node) nodes.elementAt((int) node_number - 1)).outermost_disk().change_colour(
+				NaturalNumberColour.convert(colour));
 
 	}
 
 	public void output_add_disc(short node_number)
 	{
-		((node) nodes.elementAt((int) node_number - 1)).add_radius();
+		((Node) nodes.elementAt((int) node_number - 1)).add_radius();
 
 	}
 
@@ -926,17 +926,17 @@ class Graph_Panel extends Panel implements Runnable, Algorithm_Support
 
 	{
 
-		((node) nodes.elementAt((int) node_number - 1)).remove_radius();
+		((Node) nodes.elementAt((int) node_number - 1)).remove_radius();
 
 	}
 
 	/** goddyn */
 	public void print_points()
 	{
-		node temp_node;
+		Node temp_node;
 		for (Enumeration e = nodes.elements(); e.hasMoreElements();)
 		{
-			if ((temp_node = (node) e.nextElement()) != null)
+			if ((temp_node = (Node) e.nextElement()) != null)
 			{
 				System.out.println((int) temp_node.x + " " + (int) temp_node.y + " " + (temp_node.blue ? 1 : 0));
 			}

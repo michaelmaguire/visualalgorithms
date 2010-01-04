@@ -4,7 +4,7 @@ package matching;
 
 // every algorithm should be able to do the following
 
-public interface Algorithms_Provide
+public interface AlgorithmsProvide
 {
 
 	boolean step(short node_number);

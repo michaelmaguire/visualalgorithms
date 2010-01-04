@@ -6,7 +6,7 @@
 
 package matching;
 
-public interface Algorithm_Support
+public interface AlgorithmSupport
 {
 
 	float input_graph_diameter();

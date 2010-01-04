@@ -6,74 +6,75 @@
 
 package matching.non_bipartite_perfect_matching;
 
-import matching.Algorithm_Support;
-import matching.Algorithms_Provide;
+import matching.AlgorithmSupport;
+import matching.AlgorithmsProvide;
 
-class connection
+public class Algorithm implements AlgorithmsProvide
 {
-
-	public blossom	node_in_other_to_which_i_am_connected;
-
-	public boolean	is_a_marriage;
-
-}
-
-class blossom
-{
-
-	// width means total radius if blossom is a trivial one (just a node)
-	// -- otherwise it means the width of that blossom's moat
-
-	public float		width;
-
-	// usually used only if blossom is trivial (i.e. the blossom is just a node)
-	// -- although we do number the moats when debugging
-
-	public short		node_number;
-
-	// these are used to keep track of the way blossoms contain other blossoms
-
-	public blossom		i_am_contained_in;
-
-	public blossom		i_contain;
-
-	public blossom		this_is_contained_with_me;
-
-	// these are used to keep track of the way blossoms are interconnected
-
-	public connection	first_connection, second_connection;
-
-	// these are used to keep track of the tree structure when the blossom
-	// is an outermost blossom in a tree
-
-	public blossom		node_in_me_connected_out_towards_tree_root_node;
-
-	public boolean		i_am_in_tree;
-
-	public boolean		i_am_expanding;									// used
-
-	// only
-	// when
-	// i_am_in_tree
-	// is
-	// true
-
-	public boolean is_a_node()
+	private static class Connection
 	{
-		return (i_contain == null);
+
+		public Blossom	node_in_other_to_which_i_am_connected;
+
+		public boolean	is_a_marriage;
+
 	}
 
-	public blossom()
+	private static class Blossom
 	{
-		first_connection = new connection();
-		second_connection = new connection();
+
+		// width means total radius if blossom is a trivial one (just a node)
+		// -- otherwise it means the width of that blossom's moat
+
+		public float		width;
+
+		// usually used only if blossom is trivial (i.e. the blossom is just a
+		// node)
+		// -- although we do number the moats when debugging
+
+		public short		node_number;
+
+		// these are used to keep track of the way blossoms contain other
+		// blossoms
+
+		public Blossom		i_am_contained_in;
+
+		public Blossom		i_contain;
+
+		public Blossom		this_is_contained_with_me;
+
+		// these are used to keep track of the way blossoms are interconnected
+
+		public Connection	first_connection, second_connection;
+
+		// these are used to keep track of the tree structure when the blossom
+		// is an outermost blossom in a tree
+
+		public Blossom		node_in_me_connected_out_towards_tree_root_node;
+
+		public boolean		i_am_in_tree;
+
+		public boolean		i_am_expanding;									// used
+
+		// only
+		// when
+		// i_am_in_tree
+		// is
+		// true
+
+		public boolean is_a_node()
+		{
+			return (i_contain == null);
+		}
+
+		public Blossom()
+		{
+			first_connection = new Connection();
+			second_connection = new Connection();
+		}
 	}
-}
 
-public class Algorithm implements Algorithms_Provide
-{
-
-	private Algorithm_Support									support;										// what
+	private AlgorithmSupport		support;										// what
 	// we
 	// can
 	// rely
@@ -84,36 +85,36 @@ public class Algorithm implements Algorithms_Provide
 	// output
 
 	// the basic actions to be taken
-	private static final short									NOTHING								= 0;
-	private static final short									DISSOLVE_BLOSSOM					= 1;
-	private static final short									MAKE_NEW_BLOSSOM					= 2;
-	private static final short									ADD_TO_TREE							= 3;
-	private static final short									AUGMENT								= 4;
+	private static final short		NOTHING								= 0;
+	private static final short		DISSOLVE_BLOSSOM					= 1;
+	private static final short		MAKE_NEW_BLOSSOM					= 2;
+	private static final short		ADD_TO_TREE							= 3;
+	private static final short		AUGMENT								= 4;
 
 	// some constants
-	private static final float									UNBOUNDED_GROW_WIDTH				= 0.00f;
-	private static final float									DISTANCE_TO_NODE_AT_INFINITY_FACTOR	= 2.5f;
-	private static final short									VIRTUAL_NODE_NUMBER					= -1;
+	private static final float		UNBOUNDED_GROW_WIDTH				= 0.00f;
+	private static final float		DISTANCE_TO_NODE_AT_INFINITY_FACTOR	= 2.5f;
+	private static final short		VIRTUAL_NODE_NUMBER					= -1;
 
 	// some options
-	private static final boolean								ZERO_SHOW							= false;
+	private static final boolean	ZERO_SHOW							= false;
 
-	private augment_queue_for_non_bipartite_perfect_matching	our_augment_queue;
+	private AugmentQueue			our_augment_queue;
 
-	private blossom												first_blossom;
-	private blossom												tree_root_node;
+	private Blossom					first_blossom;
+	private Blossom					tree_root_node;
 
-	private float												distance_by_which_to_change;
+	private float					distance_by_which_to_change;
 
-	private blossom												first_affected_blossom;
-	private blossom												second_affected_blossom;
+	private Blossom					first_affected_blossom;
+	private Blossom					second_affected_blossom;
 
-	private blossom												node_we_are_opting_on;
+	private Blossom					node_we_are_opting_on;
 
-	private short												action_to_be_taken;
+	private short					action_to_be_taken;
 
 	// for ZERO_SHOW
-	private short												previous_action_to_be_taken;					// only
+	private short					previous_action_to_be_taken;					// only
 	// used
 	// when
 	// testing
@@ -121,11 +122,11 @@ public class Algorithm implements Algorithms_Provide
 	// zero-growth
 	// iterations
 
-	private boolean												bumped_into_infinity;
+	private boolean					bumped_into_infinity;
 
-	private short												current_colour;
+	private short					current_colour;
 
-	public Algorithm(Algorithm_Support the_support, short number_of_nodes)
+	public Algorithm(AlgorithmSupport the_support, short number_of_nodes)
 	{
 
 		support = the_support;
@@ -148,14 +149,14 @@ public class Algorithm implements Algorithms_Provide
 			add_node();
 		}
 
-		our_augment_queue = new augment_queue_for_non_bipartite_perfect_matching();
+		our_augment_queue = new AugmentQueue();
 
 	}
 
 	public boolean step_post_op(short node_number)
 	{
 
-		blossom virtual_node, opt_node, temp_node;
+		Blossom virtual_node, opt_node, temp_node;
 		short number_of_nodes;
 		boolean value;
 
@@ -220,7 +221,7 @@ public class Algorithm implements Algorithms_Provide
 			// if( (virtual_node = (blossom ) NewHandle( sizeof( blossom ) ) )
 			// == null )
 			// return(false); // not enough memory for the virtual node
-			virtual_node = new blossom();
+			virtual_node = new Blossom();
 
 			// place virtual node at front of list
 
@@ -669,7 +670,7 @@ public class Algorithm implements Algorithms_Provide
 	private float find_next_bump()
 	{
 
-		blossom current_blossom, temp_blossom;
+		Blossom current_blossom, temp_blossom;
 		float distance_to_change;
 
 		// we want to look for any of the following cases:
@@ -692,9 +693,9 @@ public class Algorithm implements Algorithms_Provide
 		// so let current_blossom move along the outermost blossoms
 
 		distance_to_change = DISTANCE_TO_NODE_AT_INFINITY_FACTOR * support.input_graph_diameter(); // something
-																									// big
-																									// so
-																									// that
+		// big
+		// so
+		// that
 		// checking for minimum
 		// works
 		first_affected_blossom = null;
@@ -835,11 +836,11 @@ public class Algorithm implements Algorithms_Provide
 
 	}
 
-	private float compare_blossoms(blossom blossom_one, blossom blossom_two, float distance_to_change,
+	private float compare_blossoms(Blossom blossom_one, Blossom blossom_two, float distance_to_change,
 			boolean are_both_expanding)
 	{
 		float temp_distance;
-		blossom temp_node_one, temp_node_two;
+		Blossom temp_node_one, temp_node_two;
 
 		// safety check
 
@@ -955,17 +956,17 @@ public class Algorithm implements Algorithms_Provide
 	private void make_new_blossom()
 	{
 
-		blossom new_blossom, temp_blossom, previous_blossom;
-		blossom outermost_blossom_containing_first_affected_node;
-		blossom outermost_blossom_containing_second_affected_node;
-		blossom blossom_in_tree_where_their_paths_meet;
-		blossom in_first_arm_before_meeting_place, in_second_arm_before_meeting_place;
-		blossom outermost_blossom_containing_tree_root;
-		blossom temp_towards_tree_root;
+		Blossom new_blossom, temp_blossom, previous_blossom;
+		Blossom outermost_blossom_containing_first_affected_node;
+		Blossom outermost_blossom_containing_second_affected_node;
+		Blossom blossom_in_tree_where_their_paths_meet;
+		Blossom in_first_arm_before_meeting_place, in_second_arm_before_meeting_place;
+		Blossom outermost_blossom_containing_tree_root;
+		Blossom temp_towards_tree_root;
 
 		// safety check -- try to allocate memory for the new blossom
 
-		new_blossom = new blossom();
+		new_blossom = new Blossom();
 
 		// initialize the new blossom
 
@@ -1147,11 +1148,11 @@ public class Algorithm implements Algorithms_Provide
 	private void dissolve_blossom()
 	{
 
-		blossom blossom_to_dissolve;
-		blossom current_blossom, next_blossom;
-		blossom first_blossom, last_blossom;
-		blossom saved_non_spouse_node = null;
-		blossom temp_node_in_next_which_is_tight_out;
+		Blossom blossom_to_dissolve;
+		Blossom current_blossom, next_blossom;
+		Blossom first_blossom, last_blossom;
+		Blossom saved_non_spouse_node = null;
+		Blossom temp_node_in_next_which_is_tight_out;
 
 		boolean odd_number_of_blossoms_away_from_last_blossom;
 
@@ -1581,16 +1582,16 @@ public class Algorithm implements Algorithms_Provide
 
 	}
 
-	private void recursive_subroutine_augment_blossom(blossom blossom_to_augment, blossom from_node, blossom to_node)
+	private void recursive_subroutine_augment_blossom(Blossom blossom_to_augment, Blossom from_node, Blossom to_node)
 	{
 
-		blossom current_blossom, next_blossom;
-		blossom node_in_me_which_connects_me_away_from_tree_root;
-		blossom temp_spouse_node, another_temp_spouse_node, temp_non_spouse_node = null;
-		blossom temp_node_in_me_which_is_tight_out = null;
+		Blossom current_blossom, next_blossom;
+		Blossom node_in_me_which_connects_me_away_from_tree_root;
+		Blossom temp_spouse_node, another_temp_spouse_node, temp_non_spouse_node = null;
+		Blossom temp_node_in_me_which_is_tight_out = null;
 
-		blossom last_blossom_to_augment;
-		blossom first_blossom_to_augment;
+		Blossom last_blossom_to_augment;
+		Blossom first_blossom_to_augment;
 
 		boolean odd_number_of_blossoms_away_from_last_blossom;
 		boolean we_are_augmenting_at_outermost_level;
@@ -1912,7 +1913,7 @@ public class Algorithm implements Algorithms_Provide
 	private void shrink_and_grow_the_tree()
 	{
 
-		blossom temp_outermost_blossom;
+		Blossom temp_outermost_blossom;
 
 		for (temp_outermost_blossom = first_blossom; null != temp_outermost_blossom; temp_outermost_blossom = (temp_outermost_blossom).this_is_contained_with_me)
 		{
@@ -2003,7 +2004,7 @@ public class Algorithm implements Algorithms_Provide
 
 	}
 
-	private void recursive_change_all_nodes_in_blossom(blossom the_blossom, float distance, boolean expand_it)
+	private void recursive_change_all_nodes_in_blossom(Blossom the_blossom, float distance, boolean expand_it)
 	{
 
 		if (null == the_blossom)
@@ -2038,11 +2039,11 @@ public class Algorithm implements Algorithms_Provide
 
 	}
 
-	private void add_blossom_to_tree(blossom the_node_of_the_blossom_to_add, blossom the_node_of_the_blossom_to_receive)
+	private void add_blossom_to_tree(Blossom the_node_of_the_blossom_to_add, Blossom the_node_of_the_blossom_to_receive)
 	{
 
-		blossom the_blossom_to_add, the_blossom_to_receive;
-		blossom spouse_of_blossom_to_add;
+		Blossom the_blossom_to_add, the_blossom_to_receive;
+		Blossom spouse_of_blossom_to_add;
 
 		the_blossom_to_add = find_outermost_blossom_containing(the_node_of_the_blossom_to_add);
 
@@ -2065,8 +2066,8 @@ public class Algorithm implements Algorithms_Provide
 
 	}
 
-	private blossom find_containing_blossom_which_is_inside_given_blossom(blossom contained_blossom,
-			blossom given_blossom)
+	private Blossom find_containing_blossom_which_is_inside_given_blossom(Blossom contained_blossom,
+			Blossom given_blossom)
 	{
 		// safety check
 
@@ -2095,7 +2096,7 @@ public class Algorithm implements Algorithms_Provide
 
 	}
 
-	private void add_connection_in_blossom(blossom me, blossom the_node_in_the_other_to_which_i_am_connected,
+	private void add_connection_in_blossom(Blossom me, Blossom the_node_in_the_other_to_which_i_am_connected,
 			boolean make_it_a_marriage)
 	{
 
@@ -2152,7 +2153,7 @@ public class Algorithm implements Algorithms_Provide
 
 	}
 
-	private void remove_connection_in_blossom(blossom me, blossom the_node_in_the_other_to_which_i_am_connected)
+	private void remove_connection_in_blossom(Blossom me, Blossom the_node_in_the_other_to_which_i_am_connected)
 	{
 
 		// safety check
@@ -2193,9 +2194,9 @@ public class Algorithm implements Algorithms_Provide
 
 	}
 
-	private blossom get_spouse_of(blossom the_blossom)
+	private Blossom get_spouse_of(Blossom the_blossom)
 	{
-		blossom temp;// Luis
+		Blossom temp;// Luis
 		// assumes that blossoms are contained in the same blossom (or that both
 		// are outermost)
 
@@ -2235,7 +2236,7 @@ public class Algorithm implements Algorithms_Provide
 
 	}
 
-	private blossom get_non_spouse_of(blossom the_blossom)
+	private Blossom get_non_spouse_of(Blossom the_blossom)
 	{
 
 		// returns the FIRST blossom to which the_blossom is connected but not
@@ -2276,7 +2277,7 @@ public class Algorithm implements Algorithms_Provide
 
 	}
 
-	private blossom get_non_spouse_node_of(blossom the_blossom)
+	private Blossom get_non_spouse_node_of(Blossom the_blossom)
 	{
 
 		// returns the FIRST node in a blossom to which the_blossom is connected
@@ -2317,7 +2318,7 @@ public class Algorithm implements Algorithms_Provide
 	private void add_node()
 	{
 
-		blossom temp_node, previous_node = null;
+		Blossom temp_node, previous_node = null;
 		short node_number_counter = 1;
 
 		// it matters what order nodes are stored, as the user may want to see
@@ -2346,7 +2347,7 @@ public class Algorithm implements Algorithms_Provide
 		//
 		// return; // not enough memory for a new node
 
-		temp_node = new blossom();
+		temp_node = new Blossom();
 
 		// take special action if the new node is the first node to be added to
 		// the graph
@@ -2389,10 +2390,10 @@ public class Algorithm implements Algorithms_Provide
 
 	}
 
-	private blossom find_first_tree()
+	private Blossom find_first_tree()
 	{
 
-		blossom temp_node;
+		Blossom temp_node;
 
 		for (temp_node = first_blossom; null != temp_node; temp_node = (temp_node).this_is_contained_with_me)
 		{
@@ -2419,10 +2420,10 @@ public class Algorithm implements Algorithms_Provide
 
 	}
 
-	private blossom find_eligible_node_with_number(short node_number)
+	private Blossom find_eligible_node_with_number(short node_number)
 	{
 
-		blossom temp_node;
+		Blossom temp_node;
 
 		// we are looking for an ELIGIBLE node with the desired node_number
 		// -- for it to be eligible, it must still be among the outermost
@@ -2461,7 +2462,7 @@ public class Algorithm implements Algorithms_Provide
 
 	}
 
-	private void recursive_remove_blossoms(blossom the_blossom)
+	private void recursive_remove_blossoms(Blossom the_blossom)
 	{
 
 		if (null == the_blossom)
@@ -2476,10 +2477,10 @@ public class Algorithm implements Algorithms_Provide
 
 	}
 
-	private void make_blossom_not_be_contained_in_anything(blossom the_blossom)
+	private void make_blossom_not_be_contained_in_anything(Blossom the_blossom)
 	{
 
-		blossom temp_blossom, containing_blossom;
+		Blossom temp_blossom, containing_blossom;
 
 		// safety checks
 
@@ -2579,10 +2580,10 @@ public class Algorithm implements Algorithms_Provide
 
 	}
 
-	private blossom find_meeting_outermost_blossom(blossom outermost_blossom_in_tree_one,
-			blossom outermost_blossom_in_tree_two)
+	private Blossom find_meeting_outermost_blossom(Blossom outermost_blossom_in_tree_one,
+			Blossom outermost_blossom_in_tree_two)
 	{
-		blossom temp_blossom, return_blossom = null;
+		Blossom temp_blossom, return_blossom = null;
 
 		// we use the i_am_in_tree flag to our advantage
 		// we will always be in the tree with these blossoms, but will will
@@ -2630,9 +2631,9 @@ public class Algorithm implements Algorithms_Provide
 
 	}
 
-	private blossom next_outermost_blossom_towards_tree_root_from(blossom the_blossom)
+	private Blossom next_outermost_blossom_towards_tree_root_from(Blossom the_blossom)
 	{
-		blossom temp;// Luis
+		Blossom temp;// Luis
 		// this function assumes that the_blossom is in the tree
 
 		if (null == the_blossom)
@@ -2664,7 +2665,7 @@ public class Algorithm implements Algorithms_Provide
 
 	}
 
-	private void make_blossom_be_contained(blossom blossom_to_be_contained, blossom containing_blossom)
+	private void make_blossom_be_contained(Blossom blossom_to_be_contained, Blossom containing_blossom)
 	{
 
 		// safety check
@@ -2727,7 +2728,7 @@ public class Algorithm implements Algorithms_Provide
 
 	}
 
-	private void recursive_subroutine_add_discs_to_all_nodes_in_blossom(blossom the_blossom)
+	private void recursive_subroutine_add_discs_to_all_nodes_in_blossom(Blossom the_blossom)
 	{
 
 		if (the_blossom == null)
@@ -2755,7 +2756,7 @@ public class Algorithm implements Algorithms_Provide
 
 	}
 
-	private blossom get_spouse_node_of(blossom the_blossom)
+	private Blossom get_spouse_node_of(Blossom the_blossom)
 	{
 
 		if (null == the_blossom)
@@ -2787,7 +2788,7 @@ public class Algorithm implements Algorithms_Provide
 	private void reset_tree()
 	{
 
-		blossom temp_blossom, another_temp_blossom, another_temp_node;
+		Blossom temp_blossom, another_temp_blossom, another_temp_node;
 
 		// we want remove any traces of a tree from any of the outermost
 		// blossoms
@@ -2890,7 +2891,7 @@ public class Algorithm implements Algorithms_Provide
 
 	}
 
-	private boolean is_single(blossom the_node)
+	private boolean is_single(Blossom the_node)
 	{
 
 		if (null == the_node)
@@ -2919,7 +2920,7 @@ public class Algorithm implements Algorithms_Provide
 
 	}
 
-	private blossom get_node_in_me_which_is_tight_out(blossom the_blossom)
+	private Blossom get_node_in_me_which_is_tight_out(Blossom the_blossom)
 	{
 
 		// this function will get the first node in the_blossom which
@@ -2929,7 +2930,7 @@ public class Algorithm implements Algorithms_Provide
 		// blossoms -- they don't always store their tight out (only
 		// shrinking ones do)
 
-		blossom non_spouse_blossom;
+		Blossom non_spouse_blossom;
 
 		non_spouse_blossom = get_non_spouse_of(the_blossom);
 
@@ -2957,7 +2958,7 @@ public class Algorithm implements Algorithms_Provide
 
 	}
 
-	private void recursive_subroutine_remove_discs_from_all_nodes_in_blossom(blossom the_blossom)
+	private void recursive_subroutine_remove_discs_from_all_nodes_in_blossom(Blossom the_blossom)
 	{
 
 		if (null == the_blossom)
@@ -2984,7 +2985,7 @@ public class Algorithm implements Algorithms_Provide
 
 	}
 
-	private void add_discs_to_all_nodes_in_blossom(blossom the_blossom)
+	private void add_discs_to_all_nodes_in_blossom(Blossom the_blossom)
 	{
 
 		// we need a special case function to check to see if the_blossom itself
@@ -3020,7 +3021,7 @@ public class Algorithm implements Algorithms_Provide
 
 	}
 
-	private void remove_discs_from_all_nodes_in_blossom(blossom the_blossom)
+	private void remove_discs_from_all_nodes_in_blossom(Blossom the_blossom)
 	{
 
 		// we need a special case function to check to see if the_blossom itself
@@ -3054,16 +3055,16 @@ public class Algorithm implements Algorithms_Provide
 
 	}
 
-	private blossom find_node_not_in_tree_with_biggest_radius()
+	private Blossom find_node_not_in_tree_with_biggest_radius()
 	{
 
 		// places this node in second_affected_blossom
 		// and also in first_affected_blossom
 		// as this indicates that this node shall marry infinity
 
-		blossom temp_outermost_blossom;
+		Blossom temp_outermost_blossom;
 
-		blossom widest_node_so_far;
+		Blossom widest_node_so_far;
 
 		widest_node_so_far = null;
 
@@ -3080,9 +3081,9 @@ public class Algorithm implements Algorithms_Provide
 
 	}
 
-	private blossom find_node_with_number(short node_number)
+	private Blossom find_node_with_number(short node_number)
 	{
-		blossom temp_node;
+		Blossom temp_node;
 
 		// find first node in blossom
 
@@ -3121,16 +3122,16 @@ public class Algorithm implements Algorithms_Provide
 
 	}
 
-	private blossom find_expanding_node_in_tree_with_biggest_radius()
+	private Blossom find_expanding_node_in_tree_with_biggest_radius()
 	{
 
 		// places this node in second_affected_blossom
 		// and also in first_affected_blossom
 		// as this indicates that this node shall marry infinity
 
-		blossom temp_outermost_blossom;
+		Blossom temp_outermost_blossom;
 
-		blossom widest_node_so_far;
+		Blossom widest_node_so_far;
 
 		widest_node_so_far = null;
 
@@ -3147,8 +3148,8 @@ public class Algorithm implements Algorithms_Provide
 
 	}
 
-	private blossom recursive_subroutine_find_node_in_blossom_with_biggest_radius(blossom the_blossom,
-			blossom widest_node_so_far)
+	private Blossom recursive_subroutine_find_node_in_blossom_with_biggest_radius(Blossom the_blossom,
+			Blossom widest_node_so_far)
 	{
 
 		if (null == the_blossom)
@@ -3189,22 +3190,22 @@ public class Algorithm implements Algorithms_Provide
 
 	}
 
-	private blossom find_outermost_blossom_containing(blossom the_blossom)
+	private Blossom find_outermost_blossom_containing(Blossom the_blossom)
 	{
 		return (find_containing_blossom_which_is_inside_given_blossom(the_blossom, null));
 	}
 
-	private blossom get_node_in_me_which_is_married_out(blossom the_blossom)
+	private Blossom get_node_in_me_which_is_married_out(Blossom the_blossom)
 	{
 		return (get_spouse_node_of(get_spouse_of(the_blossom)));
 	}
 
-	private void add_spouse_to_blossom(blossom the_blossom, blossom the_node_to_which_i_am_espoused)
+	private void add_spouse_to_blossom(Blossom the_blossom, Blossom the_node_to_which_i_am_espoused)
 	{
 		add_connection_in_blossom(the_blossom, the_node_to_which_i_am_espoused, true);
 	}
 
-	private void add_non_spouse_to_blossom(blossom the_blossom, blossom the_node_to_which_i_am_not_espoused)
+	private void add_non_spouse_to_blossom(Blossom the_blossom, Blossom the_node_to_which_i_am_not_espoused)
 	{
 		add_connection_in_blossom(the_blossom, the_node_to_which_i_am_not_espoused, false);
 	}

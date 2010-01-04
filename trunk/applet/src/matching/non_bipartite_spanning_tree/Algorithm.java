@@ -2,40 +2,37 @@
 
 package matching.non_bipartite_spanning_tree;
 
-import matching.Algorithm_Support;
-import matching.Algorithms_Provide;
+import matching.AlgorithmSupport;
+import matching.AlgorithmsProvide;
 
 import java.awt.*; //for debugging
 
-class NSTNode
-
+public class Algorithm implements AlgorithmsProvide
 {
+	private static class Node
+	{
 
-	short	node_number;
+		short	node_number;
 
-	float	total_radius;
+		float	total_radius;
 
-	NSTNode	next_in_same_group;
+		Node	next_in_same_group;
 
-	NSTNode	next_on_top_level;
+		Node	next_on_top_level;
 
-}
+	}
 
-public class Algorithm implements Algorithms_Provide
+	private Node				first_node;
 
-{
+	private Node				group_needing_moat;
 
-	private NSTNode				first_node;
+	private Node				bumper_one;
 
-	private NSTNode				group_needing_moat;
+	private Node				bumper_ones_group;
 
-	private NSTNode				bumper_one;
+	private Node				bumper_two;
 
-	private NSTNode				bumper_ones_group;
-
-	private NSTNode				bumper_two;
-
-	private NSTNode				bumper_twos_group;
+	private Node				bumper_twos_group;
 
 	private float				nearest_distance_so_far;
 
@@ -43,12 +40,12 @@ public class Algorithm implements Algorithms_Provide
 
 	private boolean				first_time;
 
-	private Algorithm_Support	support;					// what we can rely
+	private AlgorithmSupport	support;					// what we can rely
 
 	// on for input and
 	// output
 
-	public Algorithm(Algorithm_Support the_support, short number_of_nodes)
+	public Algorithm(AlgorithmSupport the_support, short number_of_nodes)
 
 	{
 
@@ -168,11 +165,11 @@ public class Algorithm implements Algorithms_Provide
 
 	{
 
-		NSTNode temp_top_level;
+		Node temp_top_level;
 
-		NSTNode temp_node_in_group;
+		Node temp_node_in_group;
 
-		NSTNode temp_start_of_everything_else;
+		Node temp_start_of_everything_else;
 
 		for (temp_top_level = first_node; null != temp_top_level; temp_top_level = temp_top_level.next_on_top_level)
 
@@ -199,14 +196,14 @@ public class Algorithm implements Algorithms_Provide
 
 	}
 
-	private void compare_with_everything_else(NSTNode the_group_we_are_checking, NSTNode the_node_we_are_checking,
-			NSTNode the_start_of_everything_else)
+	private void compare_with_everything_else(Node the_group_we_are_checking, Node the_node_we_are_checking,
+			Node the_start_of_everything_else)
 
 	{
 
-		NSTNode temp_top_level;
+		Node temp_top_level;
 
-		NSTNode temp_node_in_group;
+		Node temp_node_in_group;
 
 		float temp_distance;
 
@@ -260,15 +257,15 @@ public class Algorithm implements Algorithms_Provide
 
 	}
 
-	private void consolidate_groups(NSTNode group_one, NSTNode group_two)
+	private void consolidate_groups(Node group_one, Node group_two)
 
 	{
 
-		NSTNode temp_top_level;
+		Node temp_top_level;
 
-		NSTNode temp_node_in_group;
+		Node temp_node_in_group;
 
-		NSTNode temp_rest_of_group_one;
+		Node temp_rest_of_group_one;
 
 		// safety check
 
@@ -343,7 +340,7 @@ public class Algorithm implements Algorithms_Provide
 
 	}
 
-	private void recursive_grow_node(NSTNode the_node)
+	private void recursive_grow_node(Node the_node)
 
 	{
 
@@ -363,7 +360,7 @@ public class Algorithm implements Algorithms_Provide
 
 	}
 
-	private void recursive_grow_moat(NSTNode the_node)
+	private void recursive_grow_moat(Node the_node)
 
 	{
 
@@ -389,7 +386,7 @@ public class Algorithm implements Algorithms_Provide
 
 	{
 
-		NSTNode temp_node, previous_node;
+		Node temp_node, previous_node;
 
 		short node_number_counter;
 
@@ -417,7 +414,7 @@ public class Algorithm implements Algorithms_Provide
 
 		}
 
-		temp_node = new NSTNode();
+		temp_node = new Node();
 
 		// take special action if the new node is the first node to be added to
 		// the graph
