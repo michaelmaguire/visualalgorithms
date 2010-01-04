@@ -1,6 +1,6 @@
 package matching;
 
-import java.awt.*; 
+import java.awt.*;
 
 import java.lang.Integer;
 import java.util.Vector;
@@ -10,26 +10,23 @@ class node extends Object
 
 {
 
-	static final int close_enough = 10;
+	static final int	close_enough	= 10;
 
+	short				node_number;
 
-	short node_number;
+	float				x, y;
 
-	float x, y;
+	Vector				disks			= new Vector(15);
 
-	Vector disks = new Vector(15);
+	boolean				should_grow		= false;
 
-	boolean should_grow=false;
+	boolean				should_shrink	= false;
 
-	boolean should_shrink=false;
+	boolean				blue			= false;
 
-	boolean blue=false;
-	
-	boolean selected;
+	boolean				selected;
 
-
-
-	node( int x1, int y1, boolean isblue, short node_number )
+	node(int x1, int y1, boolean isblue, short node_number)
 
 	{
 
@@ -41,11 +38,11 @@ class node extends Object
 
 		blue = isblue;
 
-		if( blue )
+		if (blue)
 
-		{ 
+		{
 
-			disks.addElement( (Object) new disk(this, 0, Color.blue) );
+			disks.addElement((Object) new disk(this, 0, Color.blue));
 
 		}
 
@@ -53,27 +50,26 @@ class node extends Object
 
 		{
 
-			disks.addElement( (Object) new disk(this, 0, Color.red) );
+			disks.addElement((Object) new disk(this, 0, Color.red));
 
 		}
 
 	}
-
 
 	void reset()
 	{
-	
+
 		disks = new Vector(15);
 
-		boolean should_grow=false;
+		boolean should_grow = false;
 
-		boolean should_shrink=false;
+		boolean should_shrink = false;
 
-		if( blue )
+		if (blue)
 
-		{ 
+		{
 
-			disks.addElement( (Object) new disk(this, 0, Color.blue) );
+			disks.addElement((Object) new disk(this, 0, Color.blue));
 
 		}
 
@@ -81,79 +77,69 @@ class node extends Object
 
 		{
 
-			disks.addElement( (Object) new disk(this, 0, Color.red) );
+			disks.addElement((Object) new disk(this, 0, Color.red));
 
 		}
-		
-	}
-	
 
-	boolean close_to( int x, int y )
+	}
+
+	boolean close_to(int x, int y)
 	{
-		
-		if( Math.abs(this.x - x ) < close_enough && Math.abs( this.y -y ) < close_enough)
+
+		if (Math.abs(this.x - x) < close_enough && Math.abs(this.y - y) < close_enough)
 		{
-			return( true );
+			return (true);
 		}
 		else
 		{
-			return(false );
+			return (false);
 		}
-	
+
 	}
-
-
-
 
 	void add_radius()
 	{
 
-		disks.addElement( (Object) new disk(this, ((disk) disks.lastElement()).radius) );
+		disks.addElement((Object) new disk(this, ((disk) disks.lastElement()).radius));
 	}
-
 
 	boolean remove_radius()
 
 	{
 
-
-		if( disks.isEmpty() )
+		if (disks.isEmpty())
 		{
-			return( false );
+			return (false);
 		}
 		else
 		{
 			// repair the order of the disk drawing before removing this disk
 			((disk) disks.lastElement()).prepare_to_remove();
 
-			disks.removeElementAt( disks.size()-1 );
-		
-			return( true );
+			disks.removeElementAt(disks.size() - 1);
+
+			return (true);
 		}
 	}
-
 
 	void prepare_to_remove()
 	{
 
 		// keep removing all the radius until there are no more
-		while( remove_radius() );
-	
+		while (remove_radius())
+			;
+
 	}
 
 	disk outermost_disk()
 
 	{
 
-		return( (disk) disks.lastElement() );
+		return ((disk) disks.lastElement());
 
 	}
 
-
-
-
-
-	void save( int x1, int y1 )
+	void save(int x1, int y1)
 
 	{
 
@@ -163,28 +149,20 @@ class node extends Object
 
 	}
 
-
-
-
-
 	void paint(Graphics g)
 
 	{
 
-
-
 		g.setColor(Color.black);
 
+		g.fillOval(((int) x) - 3, ((int) y) - 3, 6, 6);
 
-
-		g.fillOval(((int)x) - 3, ((int)y) - 3, 6, 6 );
-
-		if( selected )
+		if (selected)
 		{
-			g.drawOval(((int)x) - 5, ((int)y) - 5, 10, 10 );
+			g.drawOval(((int) x) - 5, ((int) y) - 5, 10, 10);
 		}
 
-		if( blue )
+		if (blue)
 
 		{
 
@@ -200,65 +178,46 @@ class node extends Object
 
 		}
 
+		g.fillOval(((int) x) - 2, ((int) y) - 2, 4, 4);
 
-
-		g.fillOval(((int)x) - 2, ((int)y) - 2, 4, 4 );
-		
 		g.setColor(Color.black);
-		
-		g.drawString( Integer.toString(node_number), (int)x+4, (int)y+8 );
+
+		g.drawString(Integer.toString(node_number), (int) x + 4, (int) y + 8);
 
 	}
-
-
 
 	float x()
 
 	{
 
-		return( x );
+		return (x);
 
 	}
-
-
 
 	float y()
 
 	{
 
-		return( y );
+		return (y);
 
 	}
 
-
-
-
-
-	float distance_to( node other_node )
+	float distance_to(node other_node)
 
 	{
 
+		return ((float) (Math.sqrt((x - other_node.x) * (x - other_node.x) +
 
-
-		return( (float)(  Math.sqrt( (x - other_node.x)*(x - other_node.x) +
-
-				(y - other_node.y)*(y - other_node.y) ) ) );
-
-
+		(y - other_node.y) * (y - other_node.y))));
 
 	}
-
-
 
 	boolean is_blue()
 
 	{
 
-		return(blue);
+		return (blue);
 
 	}
 
-
-
 }
-
