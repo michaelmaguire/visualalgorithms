@@ -6,6 +6,40 @@ import java.applet.*;
 
 import java.awt.*;
 
+/**
+ * Permission to open source this code from Luis Goddyn, Simon Fraser University.  Facebook message thread below:
+ * 
+ * Geocities going down -- moving VisualAlgorithms
+ * Between Luis Goddyn and Michael Maguire
+ * 
+ *  Michael Maguire October 8, 2009 at 5:28pm
+ *  
+ *  Luis,
+ * 
+ * For years now I've had that project we did up on:
+ * 
+ * http://www.geocities.com/michael.maguire/VisualAlgorithms/
+ * 
+ * 
+ * but apparently Yahoo! is shutting down Geocities soon.
+ * 
+ * I think it was a cool project and I'd hate to see it go away.
+ * 
+ * I was going to move that project and host it somewhere else, probably Google.
+ * 
+ * 
+ * While I was in the process of doing that, I was thinking of checking in the source code on some free code hosting service like code.google.com. Usually, however, to check stuff in on one of these it must be Open Source.
+ * 
+ * Can I get your permission to Open Source the code for that?
+ * 
+ * Cheers,
+ * Michael
+ * 
+ * Luis Goddyn October 8, 2009 at 7:10pm
+ * 
+ * It absolutely should be open source. Never did get it up to where I really wanted it. It was a great project! 
+ * 
+ */
 public class VisualMatching extends Applet
 {
 
