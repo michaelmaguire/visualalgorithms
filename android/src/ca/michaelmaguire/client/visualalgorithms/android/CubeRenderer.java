@@ -87,6 +87,7 @@ class CubeRenderer implements GLSurfaceView.Renderer {
          */
         gl.glDisable(GL10.GL_DITHER);
 
+        
         /*
          * Some one-time OpenGL initialization can be made here
          * probably based on features of this particular context
