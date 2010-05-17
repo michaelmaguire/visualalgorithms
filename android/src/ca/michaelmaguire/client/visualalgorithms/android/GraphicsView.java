@@ -84,17 +84,17 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback
 			GraphicObject graphic = null;
 			if( aMotionEvent.getAction() == MotionEvent.ACTION_DOWN )
 			{
-				graphic = new GraphicObject( BitmapFactory.decodeResource( getResources(), R.drawable.icon ) );
-				graphic.getCoordinates().setX( (int) aMotionEvent.getX() - graphic.getGraphic().getWidth() / 2 );
-				graphic.getCoordinates().setY( (int) aMotionEvent.getY() - graphic.getGraphic().getHeight() / 2 );
+				graphic = new GraphicObject( BitmapFactory.decodeResource( getResources(), R.drawable.bullet_orange ) );
+				graphic.getCoordinates().setX( (int) aMotionEvent.getX() - graphic.getBitmap().getWidth() / 2 );
+				graphic.getCoordinates().setY( (int) aMotionEvent.getY() - graphic.getBitmap().getHeight() / 2 );
 				iCurrentGraphic = graphic;
 			}
 			else if( aMotionEvent.getAction() == MotionEvent.ACTION_MOVE )
 			{
 				iCurrentGraphic.getCoordinates().setX(
-						(int) aMotionEvent.getX() - iCurrentGraphic.getGraphic().getWidth() / 2 );
+						(int) aMotionEvent.getX() - iCurrentGraphic.getBitmap().getWidth() / 2 );
 				iCurrentGraphic.getCoordinates().setY(
-						(int) aMotionEvent.getY() - iCurrentGraphic.getGraphic().getHeight() / 2 );
+						(int) aMotionEvent.getY() - iCurrentGraphic.getBitmap().getHeight() / 2 );
 			}
 			else if( aMotionEvent.getAction() == MotionEvent.ACTION_UP )
 			{
@@ -113,14 +113,14 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback
 		GraphicObject.Coordinates coords;
 		for( GraphicObject graphic : iGraphics )
 		{
-			bitmap = graphic.getGraphic();
+			bitmap = graphic.getBitmap();
 			coords = graphic.getCoordinates();
 			aCanvas.drawBitmap( bitmap, coords.getX(), coords.getY(), null );
 		}
 		// draw current graphic at last...
 		if( null != iCurrentGraphic )
 		{
-			bitmap = iCurrentGraphic.getGraphic();
+			bitmap = iCurrentGraphic.getBitmap();
 			coords = iCurrentGraphic.getCoordinates();
 			aCanvas.drawBitmap( bitmap, coords.getX(), coords.getY(), null );
 		}
@@ -159,10 +159,10 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback
 				speed.toggleXDirection();
 				coord.setX( -coord.getX() );
 			}
-			else if( coord.getX() + graphicObject.getGraphic().getWidth() > getWidth() )
+			else if( coord.getX() + graphicObject.getBitmap().getWidth() > getWidth() )
 			{
 				speed.toggleXDirection();
-				coord.setX( coord.getX() + getWidth() - (coord.getX() + graphicObject.getGraphic().getWidth()) );
+				coord.setX( coord.getX() + getWidth() - (coord.getX() + graphicObject.getBitmap().getWidth()) );
 			}
 
 			// borders for y...
@@ -171,10 +171,10 @@ public class GraphicsView extends SurfaceView implements SurfaceHolder.Callback
 				speed.toggleYDirection();
 				coord.setY( -coord.getY() );
 			}
-			else if( coord.getY() + graphicObject.getGraphic().getHeight() > getHeight() )
+			else if( coord.getY() + graphicObject.getBitmap().getHeight() > getHeight() )
 			{
 				speed.toggleYDirection();
-				coord.setY( coord.getY() + getHeight() - (coord.getY() + graphicObject.getGraphic().getHeight()) );
+				coord.setY( coord.getY() + getHeight() - (coord.getY() + graphicObject.getBitmap().getHeight()) );
 			}
 		}
 	}

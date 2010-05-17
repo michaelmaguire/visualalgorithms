@@ -20,7 +20,7 @@ class GraphicObject
 		return iSpeed;
 	}
 
-	public Bitmap getGraphic()
+	public Bitmap getBitmap()
 	{
 		return iBitmap;
 	}
